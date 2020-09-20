@@ -5,7 +5,7 @@ using UnityEngine;
 public class BoxController : MonoBehaviour {
     Transform transform;
 
-    public Alien alien;
+    //public Alien alien;
     // correct or wrong
     public bool status;
     // clicked or unclicked
@@ -47,7 +47,7 @@ public class BoxController : MonoBehaviour {
         intervalX = gridWidth/gridSize;
         intervalY = gridHeight/gridSize;
         maxY = row*intervalY;
-        createAlien();
+        //createAlien();
         transform = GetComponent<Transform>();
         //wall = GameObject.transform.GetChild(2).transform.GetComponent<Wall>();
         wall = myObj.GetComponentInChildren<Wall>();
@@ -67,8 +67,7 @@ public class BoxController : MonoBehaviour {
                 if(timeStart > timeEnd){
                     wall.render();
                 }
-            }else{
-                rendered = true;
+                rendered = wall.getRendered();
             }
             timeStart++;
         }
@@ -76,14 +75,11 @@ public class BoxController : MonoBehaviour {
 
     }
 
-    public void renderWall () {
-        
-    }
-
     public BoxController(int row, int col, int gridSize) {
 
     }
 
+    /*
     public void createAlien() {
         this.alien = new Alien();
     }
@@ -94,7 +90,7 @@ public class BoxController : MonoBehaviour {
 
     public string getAlienStatus() {
         return this.alien.getType();
-    }
+    }*/
 
     public bool getBoxStatus() {
         return this.status;
@@ -113,7 +109,13 @@ public class BoxController : MonoBehaviour {
     }
 
     public void randomizeAlien() {
-        this.alien.randomizeType();
+        //this.alien.randomizeType();
+    }
+
+    void OnMouseDown() {
+        if(rendered) {
+            Destroy(gameObject);
+        }
     }
 
 }

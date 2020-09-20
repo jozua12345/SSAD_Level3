@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Linq;
 
 public class GridController : MonoBehaviour {
     private BoxController[,] grid;
@@ -14,25 +15,40 @@ public class GridController : MonoBehaviour {
     private float maxY;
     private float curY;
     string[] types;
+    int[] typesArr;
     System.Random r;
 
-    void Awake() {
-        size = 4;
+    void Awake() {       
         gridHeight = 10;
-        gridWidth = 30;
+        gridWidth = 40;
         startX = -15;
         curY = -3.6f;
+        
+        //setAndStartGrid(4);
+    }
+
+    public void setAndStartGrid(int size) {
+        this.size = size;
+        
         grid = new BoxController[size, size];
         gridObject = new GameObject[size, size];
         types = new string[] {"G", "R"};
         r = new System.Random();
 
+        typesArr = new int[size*size];
+        for (int j = 0; j < size*size; j++) {
+            if (j < (size*size)/2){
+                typesArr[j] = 0;
+            }else{
+                typesArr[j] = 1;
+            }
+        }
+        typesArr = typesArr.OrderBy(x => r.Next()).ToArray();
+        int index = 0;
         for (int row = 0; row < size; row++) {
             for (int col = 0; col < size; col++) {
-                // Get reandom type
-                int i = r.Next(0, 2);
-                Debug.Log(i);
-                string type = types[i];
+                string type = types[typesArr[index]];
+                index++;
                 // Render prefab according to type
                 GameObject a = null;
                 if (type=="G"){
@@ -67,7 +83,7 @@ public class GridController : MonoBehaviour {
         
     }
 
-    
+    /*
     public GridController(int size) {
         
         this.size = size;
@@ -81,8 +97,8 @@ public class GridController : MonoBehaviour {
                 grid[row, col].gridSize = size;
                 grid[row, col].gridHeight = gridHeight;
                 grid[row, col].gridWidth = gridWidth;
-                grid[row, col].startX = -12;
-                grid[row, col].curY = -3.6f;
+                grid[row, col].startX = startX;
+                grid[row, col].curY = curY;
             }
         }
         scrambleGrid();
@@ -99,7 +115,7 @@ public class GridController : MonoBehaviour {
                 grid[row, col].randomizeAlien();
             }
         }
-    }
+    }*/
 
     public BoxController[,] getGrid() {
         return grid;

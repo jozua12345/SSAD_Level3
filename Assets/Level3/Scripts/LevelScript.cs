@@ -4,24 +4,34 @@ using UnityEngine;
 
 public class LevelScript : MonoBehaviour
 {
-    int gridSize = 4;
+    int[] gridSizes;
+    int stage;
     public GridController gridController;
     int totalPoints;
     int target;
-    int lives = 3;
+    int lives;
+    bool gamePaused;
+    bool renderGrid;
+
     // Start is called before the first frame update
-    void Start()
-    {
-        
+    void Start() {
+        gridSizes = new int[] {0, 4, 5, 6};
+        stage = 1;
+        totalPoints = 76;
+        lives = 3;
+        gamePaused = false;
+        renderGrid = true;
     }
 
     // Update is called once per frame
-    void Update()
-    {
-        checkSolution();
-        
+    void Update() {
+        if(renderGrid) {
+            gridController.setAndStartGrid(gridSizes[stage]);
+            renderGrid = false;
+        }
     }
 
+    /*
     void checkSolution(){  //check the points if it reach the target
 
 
@@ -60,10 +70,11 @@ public class LevelScript : MonoBehaviour
 
     //go to next level
     }
+    */
 
 
     void generateGrid() {
-        gridController = new GridController(gridSize);
+        //gridController = new GridController(gridSize);
 
     }
 
