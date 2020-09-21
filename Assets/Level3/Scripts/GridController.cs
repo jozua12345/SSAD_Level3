@@ -6,7 +6,8 @@ using System.Linq;
 public class GridController : MonoBehaviour {
     private BoxController[,] grid;
     private GameObject[,] gridObject;
-    private int size;
+    private int height;
+    private int width;
     private int gridHeight;
     private int gridWidth;
     public GameObject boxPrefab;
@@ -18,26 +19,31 @@ public class GridController : MonoBehaviour {
     int[] typesArr;
     System.Random r;
 
+    public float numberOfAliensLeft;
+    public bool correct;
+
     void Awake() {       
         gridHeight = 10;
         gridWidth = 40;
-        startX = -15;
+        startX = -16;
         curY = -3.6f;
+        height = 4;
         
         //setAndStartGrid(4);
     }
 
-    public void setAndStartGrid(int size) {
-        this.size = size;
-        
-        grid = new BoxController[size, size];
-        gridObject = new GameObject[size, size];
+    public void setAndStartGrid(int width) {
+        this.width = width;
+        numberOfAliensLeft = (width*height)/2;
+        correct = true;
+        grid = new BoxController[height, width];
+        gridObject = new GameObject[height, width];
         types = new string[] {"G", "R"};
         r = new System.Random();
 
-        typesArr = new int[size*size];
-        for (int j = 0; j < size*size; j++) {
-            if (j < (size*size)/2){
+        typesArr = new int[height*width];
+        for (int j = 0; j < height*width; j++) {
+            if (j < (height*width)/2){
                 typesArr[j] = 0;
             }else{
                 typesArr[j] = 1;
@@ -45,8 +51,8 @@ public class GridController : MonoBehaviour {
         }
         typesArr = typesArr.OrderBy(x => r.Next()).ToArray();
         int index = 0;
-        for (int row = 0; row < size; row++) {
-            for (int col = 0; col < size; col++) {
+        for (int row = 0; row < height; row++) {
+            for (int col = 0; col < width; col++) {
                 string type = types[typesArr[index]];
                 index++;
                 // Render prefab according to type
@@ -62,7 +68,8 @@ public class GridController : MonoBehaviour {
                 grid[row, col] = a.GetComponent<BoxController>();
                 grid[row, col].row = row;
                 grid[row, col].col = col;
-                grid[row, col].gridSize = size;
+                grid[row, col].width = width;
+                grid[row, col].height = height;
                 grid[row, col].gridHeight = gridHeight;
                 grid[row, col].gridWidth = gridWidth;
                 grid[row, col].startX = startX;
@@ -83,58 +90,32 @@ public class GridController : MonoBehaviour {
         
     }
 
-    /*
-    public GridController(int size) {
-        
-        this.size = size;
-        this.grid = new BoxController[size, size];
 
-        for (int row = 0; row < size; row++) {
-            for (int col = 0; col < size; col++) {
-                grid[row, col] = Instantiate(boxPrefab).GetComponent<BoxController>();
-                grid[row, col].row = row;
-                grid[row, col].col = col;
-                grid[row, col].gridSize = size;
-                grid[row, col].gridHeight = gridHeight;
-                grid[row, col].gridWidth = gridWidth;
-                grid[row, col].startX = startX;
-                grid[row, col].curY = curY;
-            }
-        }
-        scrambleGrid();
-
-
-        //show timer countdown 
-        //rotate the box to hide aliens
-
-    }
-
-    public void scrambleGrid() {
-        for (int row = 0; row < size; row++) {
-            for (int col = 0; col < size; col++) {
-                grid[row, col].randomizeAlien();
-            }
-        }
-    }*/
 
     public BoxController[,] getGrid() {
         return grid;
     }
 
-    public bool checkGridStatus() {
-        bool ans = true;
-        for (int row = 0; row < size; row++) {
-            for (int col = 0; col < size; col++) {
-                if(grid[row, col].isBoxClicked()) {
-                    ans = ans && grid[row, col].getBoxStatus();
-                }
+    public int checkSolution() {
+        if (numberOfAliensLeft <= 0) {
+            if (correct) {
+                return 1;
+            }else {
+                return 0;
             }
         }
-        return ans;
+        return -1;
     }
 
-    public int getGridPoints() {
-        return 1;
+    public void destroyAll() {
+        for (int row = 0; row < height; row++) {
+            for (int col = 0; col < width; col++) {
+                Destroy(gridObject[row, col]);
+            }
+        }
+        gridObject = null;
+        grid = null;
     }
+
 }
     

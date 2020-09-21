@@ -9,25 +9,53 @@ public class LevelScript : MonoBehaviour
     public GridController gridController;
     int totalPoints;
     int target;
-    int lives;
     bool gamePaused;
     bool renderGrid;
 
+    public int lives;
+    public string curBulletColor;
+    public int curScore;
+    public int maxScore;
+    System.Random r;
+
     // Start is called before the first frame update
     void Start() {
+        r = new System.Random();
         gridSizes = new int[] {0, 4, 5, 6};
         stage = 1;
         totalPoints = 76;
         lives = 3;
         gamePaused = false;
         renderGrid = true;
+        reloadBullet();
+        curScore = 0;
+        maxScore = 76;
     }
 
     // Update is called once per frame
     void Update() {
-        if(renderGrid) {
-            gridController.setAndStartGrid(gridSizes[stage]);
-            renderGrid = false;
+        if (!gamePaused) {
+            if(renderGrid) {
+                gridController.setAndStartGrid(gridSizes[stage]);
+                renderGrid = false;
+            }else {
+                if (lives <= 0){
+                    Debug.Log("Game Over, you lose!");
+                }else if (curScore > maxScore) {
+                    Debug.Log("Game Over, you win!");
+                }else {
+                    if(gridController.checkSolution() == 1){
+                        gridController.destroyAll();
+                        stage++;
+                        gridController.setAndStartGrid(gridSizes[stage]);
+                        reloadBullet();
+                    }else if (gridController.checkSolution() == 0){
+                        gridController.destroyAll();
+                        gridController.setAndStartGrid(gridSizes[stage]);
+                        reloadBullet();
+                    }
+                }
+            }
         }
     }
 
@@ -79,6 +107,9 @@ public class LevelScript : MonoBehaviour
     }
 
     void reloadBullet() {
+        string[] types = new string[] {"G", "R"};
+        curBulletColor = types[r.Next(0, 2)];
+        Debug.Log("Bullet color is now " + curBulletColor);
     }
 
 }

@@ -14,7 +14,8 @@ public class BoxController : MonoBehaviour {
     public int row;
     public int col;
 
-    public int gridSize;
+    public int height;
+    public int width;
     public float gridHeight;
     public float gridWidth;
     public float intervalX;
@@ -29,6 +30,8 @@ public class BoxController : MonoBehaviour {
     public string type;
 
     public GameObject myObj;
+    public GameObject levelScript;
+    public GameObject gridController;
 
     void Awake() {
         // correct or wrong
@@ -40,12 +43,13 @@ public class BoxController : MonoBehaviour {
         timeEnd = 1000;
         rendered = false;
 
+
     }
     
     // Start is called before the first frame update
     void Start() {
-        intervalX = gridWidth/gridSize;
-        intervalY = gridHeight/gridSize;
+        intervalX = gridWidth/width;
+        intervalY = gridHeight/height;
         maxY = row*intervalY;
         //createAlien();
         transform = GetComponent<Transform>();
@@ -75,23 +79,6 @@ public class BoxController : MonoBehaviour {
 
     }
 
-    public BoxController(int row, int col, int gridSize) {
-
-    }
-
-    /*
-    public void createAlien() {
-        this.alien = new Alien();
-    }
-
-    public void killAlien() {
-        this.alien = null;
-    }
-
-    public string getAlienStatus() {
-        return this.alien.getType();
-    }*/
-
     public bool getBoxStatus() {
         return this.status;
     }
@@ -113,8 +100,19 @@ public class BoxController : MonoBehaviour {
     }
 
     void OnMouseDown() {
+        LevelScript levelScriptComponent = levelScript.GetComponentInChildren<LevelScript>();
+        GridController gridControllerComponent = gridController.GetComponentInChildren<GridController>();
+
         if(rendered) {
-            Destroy(gameObject);
+            if (string.Equals(levelScriptComponent.curBulletColor, type)){
+                Destroy(gameObject);
+                levelScriptComponent.curScore += 2;
+                gridControllerComponent.numberOfAliensLeft--;
+            }else{
+                levelScriptComponent.lives--;
+                gridControllerComponent.correct = false;
+            }
+            Debug.Log("Lives: " + levelScriptComponent.lives + " Score: " + levelScriptComponent.curScore);
         }
     }
 

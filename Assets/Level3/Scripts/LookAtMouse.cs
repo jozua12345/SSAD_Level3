@@ -11,7 +11,7 @@ public class LookAtMouse : MonoBehaviour {
         
         if (Physics.Raycast(rayOrigin, out hitInfo)) {
             if(hitInfo.collider != null) {
-                Debug.Log(hitInfo);
+                //Debug.Log(hitInfo);
                 Vector3 direction = hitInfo.point - gun.position;
                 gun.rotation = Quaternion.LookRotation(hitInfo.point, Vector3.up);
             }
