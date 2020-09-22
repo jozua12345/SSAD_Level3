@@ -32,6 +32,7 @@ public class BoxController : MonoBehaviour {
     public GameObject myObj;
     public GameObject levelScript;
     public GameObject gridController;
+    public GameObject bullet;
 
     private Animator boxAnimator;
     private AudioSource score;
@@ -109,11 +110,12 @@ public class BoxController : MonoBehaviour {
 
     void OnMouseDown() {
         LevelScript levelScriptComponent = levelScript.GetComponentInChildren<LevelScript>();
+        Bullet bulletScript = bullet.GetComponentInChildren<Bullet>();
         GridController gridControllerComponent = gridController.GetComponentInChildren<GridController>();
 
         if(rendered) {
-            if (string.Equals(levelScriptComponent.curBulletColor, type)){
-                levelScriptComponent.curScore += 2;
+            if (string.Equals(bulletScript.curBulletColor, type)){
+                levelScriptComponent.totalPoints += 2;
                 gridControllerComponent.numberOfAliensLeft--;
                 score.Play();
                 animateDestroy();
@@ -122,7 +124,7 @@ public class BoxController : MonoBehaviour {
                 gridControllerComponent.correct = false;
                 deflect.Play();
             }
-            Debug.Log("Lives: " + levelScriptComponent.lives + " Score: " + levelScriptComponent.curScore);
+            Debug.Log("Lives: " + levelScriptComponent.lives + " Score: " + levelScriptComponent.totalPoints);
         }
     }
 

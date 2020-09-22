@@ -8,48 +8,42 @@ using UnityEngine.UI;
 
 public class LevelScript : MonoBehaviour
 {
-    int gridSize = 4;
     public GridController gridController;
-    int totalPoints;
-    int target;
+    private int[] gridSizes;
+    private int stage;
     bool gamePaused;
     bool renderGrid;
     public GameObject heart1;
     public GameObject heart2;
     public GameObject heart3;
+    public GameObject bullet;
     public Image fuelMeter;
-    float totalPoints;
-    float target;
-    static int lives = 3;
+    public float totalPoints;
+    public float target;
+    public int lives;
     public Image[] images;
 
-    public int lives;
-    public string curBulletColor;
-    public int curScore;
-    public int maxScore;
-    System.Random r;
 
+    
     // Start is called before the first frame update
     void Start() {
-        r = new System.Random();
         gridSizes = new int[] {0, 4, 5, 6};
         stage = 1;
-        totalPoints = 76;
+        totalPoints = 0;
         lives = 3;
         gamePaused = false;
         renderGrid = true;
-        reloadBullet();
-        curScore = 0;
-        maxScore = 60;
-    void Start()
-    {
+        bullet.GetComponent<Bullet>().setBulletColor();
         fuelMeter.fillAmount = 0;
-        target = 72;
+        target = 60;
     }
 
     // Update is called once per frame
     void Update() {
         if (!gamePaused) {
+            showLives();
+            fillFuel();
+
             if(renderGrid) {
                 gridController.setAndStartGrid(gridSizes[stage]);
                 renderGrid = false;
@@ -57,29 +51,24 @@ public class LevelScript : MonoBehaviour
                 if (lives <= 0){
                     Debug.Log("Game Over, you lose!");
                     Invoke("loadGameOver", 0.5f);
-                }else if (curScore >= maxScore) {
+                }else if (totalPoints >= target) {
                     Debug.Log("Game Over, you win!");
                 }else {
                     if(gridController.checkSolution() == 1){
                         gridController.destroyAll();
                         stage++;
                         gridController.setAndStartGrid(gridSizes[stage]);
-                        reloadBullet();
+                        bullet.GetComponent<Bullet>().setBulletColor();
                     }else if (gridController.checkSolution() == 0){
                         gridController.destroyAll();
                         gridController.setAndStartGrid(gridSizes[stage]);
-                        reloadBullet();
+                        bullet.GetComponent<Bullet>().setBulletColor();
                     }
                 }
             }
         }
-    void Update()
-    {
-
-        checkSolution();
-        fillFuel();
-
     }
+
 
     void loadGameOver () {
         SceneManager.LoadScene("GameOver");
@@ -125,17 +114,18 @@ public class LevelScript : MonoBehaviour
 
 
     //go to next level
-    }
+    }*/
 
     public void fillFuel() {  //affect the fuel meter
         float points = totalPoints / target;
         fuelMeter.fillAmount = points;
     }
 
+    /*
     public void setLives(){  //test function to see lives
         lives--;
         showLives();
-    }
+    }*/
 
     void showLives()
     {
@@ -170,18 +160,5 @@ public class LevelScript : MonoBehaviour
         }
     }
 
-   
-
-
-    void generateGrid() {
-        gridController = new GridController(gridSize);
-
-    }
-
-    void reloadBullet() {
-        string[] types = new string[] {"G", "R"};
-        curBulletColor = types[r.Next(0, 2)];
-        Debug.Log("Bullet color is now " + curBulletColor);
-    }
 
 }
