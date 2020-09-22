@@ -118,7 +118,7 @@ public class GridController : MonoBehaviour {
     }
 
     public int getGridPoints() {
-        return 1;
+        return 0;  //0 first or the fuel meter will increase every update 
     }
 }
     
