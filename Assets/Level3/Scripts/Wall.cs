@@ -7,11 +7,13 @@ public class Wall : MonoBehaviour {
     private float maxY;
     private float curY;
     private bool rendering;
+    private bool rendered;
 
     void Awake () {
         maxY = 2.3743f;
         curY = 0f;
         rendering = false;
+        rendered = false;
     }
     // Start is called before the first frame update
     void Start() {
@@ -29,12 +31,17 @@ public class Wall : MonoBehaviour {
                 curY += 0.01f;
             }else{
                 rendering = false;
+                rendered = true;
             }
         }
     }
 
     public void render() {
         this.rendering = true;
+    }
+
+    public bool getRendered() {
+        return this.rendered;
     }
 
 }
