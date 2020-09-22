@@ -1,8 +1,9 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
-public class GameRules : MonoBehaviour
+public class GameOver : MonoBehaviour
 {
     // Start is called before the first frame update
     void Start()
@@ -13,12 +14,9 @@ public class GameRules : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
-    }
-
-    // Update is called once per frame
-    void checkSolution()
-    {
-
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            SceneManager.LoadScene("Main");
+        }
     }
 }

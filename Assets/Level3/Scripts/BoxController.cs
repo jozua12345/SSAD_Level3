@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class BoxController : MonoBehaviour {
     Transform transform;
-
+    
     //public Alien alien;
     // correct or wrong
     public bool status;
@@ -33,6 +33,10 @@ public class BoxController : MonoBehaviour {
     public GameObject levelScript;
     public GameObject gridController;
 
+    private Animator boxAnimator;
+    private AudioSource score;
+    private AudioSource deflect;
+
     void Awake() {
         // correct or wrong
         status = false;
@@ -42,6 +46,10 @@ public class BoxController : MonoBehaviour {
         timeStart = 0;
         timeEnd = 1000;
         rendered = false;
+
+        AudioSource[] sound = GetComponents<AudioSource>();
+        score = sound[1];
+        deflect = sound[0];
 
 
     }
@@ -105,15 +113,23 @@ public class BoxController : MonoBehaviour {
 
         if(rendered) {
             if (string.Equals(levelScriptComponent.curBulletColor, type)){
-                Destroy(gameObject);
                 levelScriptComponent.curScore += 2;
                 gridControllerComponent.numberOfAliensLeft--;
+                score.Play();
+                animateDestroy();
             }else{
                 levelScriptComponent.lives--;
                 gridControllerComponent.correct = false;
+                deflect.Play();
             }
             Debug.Log("Lives: " + levelScriptComponent.lives + " Score: " + levelScriptComponent.curScore);
         }
+    }
+
+    public void animateDestroy() {
+        boxAnimator = myObj.GetComponent<Animator>();
+        boxAnimator.Play("DestroyBox");
+        Destroy(gameObject, boxAnimator.GetCurrentAnimatorStateInfo(0).length-0.3f); 
     }
 
 }

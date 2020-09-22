@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class LevelScript : MonoBehaviour
 {
@@ -29,7 +30,7 @@ public class LevelScript : MonoBehaviour
         renderGrid = true;
         reloadBullet();
         curScore = 0;
-        maxScore = 76;
+        maxScore = 60;
     }
 
     // Update is called once per frame
@@ -41,7 +42,8 @@ public class LevelScript : MonoBehaviour
             }else {
                 if (lives <= 0){
                     Debug.Log("Game Over, you lose!");
-                }else if (curScore > maxScore) {
+                    Invoke("loadGameOver", 0.5f);
+                }else if (curScore >= maxScore) {
                     Debug.Log("Game Over, you win!");
                 }else {
                     if(gridController.checkSolution() == 1){
@@ -58,6 +60,11 @@ public class LevelScript : MonoBehaviour
             }
         }
     }
+
+    void loadGameOver () {
+        SceneManager.LoadScene("GameOver");
+    }
+    
 
     /*
     void checkSolution(){  //check the points if it reach the target
