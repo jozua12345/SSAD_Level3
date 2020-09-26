@@ -18,6 +18,7 @@ public class GridController : MonoBehaviour {
     string[] types;
     int[] typesArr;
     System.Random r;
+    public EnemiesCount enemiesCount;
 
     public float numberOfAliensLeft;
     public bool correct;
@@ -34,7 +35,8 @@ public class GridController : MonoBehaviour {
 
     public void setAndStartGrid(int width) {
         this.width = width;
-        numberOfAliensLeft = (width*height)/2;
+        numberOfAliensLeft = (width*height)/2;   //total number of bullets
+        enemiesCount.setEnemyCount(numberOfAliensLeft);
         correct = true;
         grid = new BoxController[height, width];
         gridObject = new GameObject[height, width];

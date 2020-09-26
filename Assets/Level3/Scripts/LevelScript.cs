@@ -53,13 +53,17 @@ public class LevelScript : MonoBehaviour
                     Invoke("loadGameOver", 0.5f);
                 }else if (totalPoints >= target) {
                     Debug.Log("Game Over, you win!");
-                }else {
+                    Invoke("loadEndGame", 0.5f);
+
+                }
+                else {
                     if(gridController.checkSolution() == 1){
                         gridController.destroyAll();
                         stage++;
                         gridController.setAndStartGrid(gridSizes[stage]);
                         bullet.GetComponent<Bullet>().setBulletColor();
                     }else if (gridController.checkSolution() == 0){
+                        lives--;
                         gridController.destroyAll();
                         gridController.setAndStartGrid(gridSizes[stage]);
                         bullet.GetComponent<Bullet>().setBulletColor();
@@ -73,7 +77,12 @@ public class LevelScript : MonoBehaviour
     void loadGameOver () {
         SceneManager.LoadScene("GameOver");
     }
-    
+
+    void loadEndGame()
+    {
+        SceneManager.LoadScene(3);
+    }
+
 
     /*
     void checkSolution(){  //check the points if it reach the target
