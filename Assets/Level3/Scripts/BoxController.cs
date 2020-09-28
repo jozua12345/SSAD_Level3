@@ -21,7 +21,7 @@ public class BoxController : MonoBehaviour {
     public float intervalX;
     public float intervalY;
     public float startX;
-
+    public GameObject incorrect; 
     public float maxY;
     public float curY;
     public int timeStart;
@@ -126,6 +126,7 @@ public class BoxController : MonoBehaviour {
             }else{
                 //levelScriptComponent.lives--;
                 gridControllerComponent.correct = false;
+                incorrect.SetActive(true);
                 deflect.Play();
             }
             Debug.Log("Lives: " + levelScriptComponent.lives + " Score: " + levelScriptComponent.totalPoints);
