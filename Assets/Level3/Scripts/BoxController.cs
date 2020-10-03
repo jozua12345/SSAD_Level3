@@ -2,9 +2,10 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BoxController : MonoBehaviour {
+public class BoxController : MonoBehaviour
+{
     Transform transform;
-    
+
     //public Alien alien;
     // correct or wrong
     public bool status;
@@ -21,32 +22,34 @@ public class BoxController : MonoBehaviour {
     public float intervalX;
     public float intervalY;
     public float startX;
-    public GameObject incorrect; 
+    public GameObject incorrect;
     public float maxY;
     public float curY;
     public int timeStart;
     public int timeEnd;
     public bool rendered;
     public string type;
+    public bool last;
 
     public GameObject myObj;
     public GameObject levelScript;
     public GameObject gridController;
     public GameObject bullet;
     public EnemiesCount enemiesCount; /// <summary>
-    ///
-    /// </summary>
+                                      ///
+                                      /// </summary>
 
     private Animator boxAnimator;
     private AudioSource score;
     private AudioSource deflect;
 
-    void Awake() {
+    void Awake()
+    {
         // correct or wrong
         status = false;
         // clicked or unclicked
         clicked = false;
-    
+
         timeStart = 0;
         timeEnd = 1000;
         rendered = false;
@@ -54,88 +57,104 @@ public class BoxController : MonoBehaviour {
         AudioSource[] sound = GetComponents<AudioSource>();
         score = sound[1];
         deflect = sound[0];
+        last = false;
 
 
     }
-    
+
     // Start is called before the first frame update
-    void Start() {
-        intervalX = gridWidth/width;
-        intervalY = gridHeight/height;
-        maxY = row*intervalY;
+    void Start()
+    {
+        intervalX = gridWidth / width;
+        intervalY = gridHeight / height;
+        maxY = row * intervalY;
         //createAlien();
         transform = GetComponent<Transform>();
         //wall = GameObject.transform.GetChild(2).transform.GetComponent<Wall>();
         wall = myObj.GetComponentInChildren<Wall>();
-        
-        transform.localPosition = new Vector3(startX+col*intervalX, curY, 20f);
-        
+
+        transform.localPosition = new Vector3(startX + col * intervalX, curY, 20f);
+
     }
 
     // Update is called once per frame
-    void Update() {
+    void Update()
+    {
         // Start animaton
+        GridController gc = gridController.GetComponent<GridController>();
         LevelScript levelScriptComponent = levelScript.GetComponentInChildren<LevelScript>();
-  
 
+        if (curY < maxY)
+        {
+            transform.localPosition += new Vector3(0f, 0.05f, 0f);
+            curY += 0.05f;
+        }
+        else
+        {
+            if (!levelScriptComponent.tutorialStagePart2)
+            {
 
-            if (curY < maxY)
-            {
-                transform.localPosition += new Vector3(0f, 0.05f, 0f);
-                curY += 0.05f;
-            }
-            else
-            {
-                if (!levelScriptComponent.tutorialStagePart2)
+                if (!rendered)
                 {
-                    if (!rendered)
+                    if (gc.curTime < gc.endTime)
                     {
-                        if (timeStart > timeEnd)
-                        {
-                            wall.render();
-                        }
-                        rendered = wall.getRendered();
+                        wall.render();
                     }
-                    timeStart++;
+                    rendered = wall.getRendered();
+                }
+                if (last)
+                {
+                    gc.curTime -= 1 * Time.deltaTime;
                 }
             }
-        
+        }
+
 
     }
 
-    public bool getBoxStatus() {
+    public bool getBoxStatus()
+    {
         return this.status;
     }
 
-    public bool isBoxClicked() {
+    public bool isBoxClicked()
+    {
         return this.clicked;
     }
 
-    public void setBoxStatus(bool status) {
+    public void setBoxStatus(bool status)
+    {
         this.status = status;
     }
 
-    public void setBoxClicked(bool clicked) {
+    public void setBoxClicked(bool clicked)
+    {
         this.clicked = clicked;
     }
 
-    public void randomizeAlien() {
+    public void randomizeAlien()
+    {
         //this.alien.randomizeType();
     }
 
-    void OnMouseDown() {
+    void OnMouseDown()
+    {
         LevelScript levelScriptComponent = levelScript.GetComponentInChildren<LevelScript>();
         Bullet bulletScript = bullet.GetComponentInChildren<Bullet>();
         GridController gridControllerComponent = gridController.GetComponentInChildren<GridController>();
-        
-        if(rendered) {
-            if (string.Equals(bulletScript.curBulletColor, type)){
+
+        if (rendered)
+        {
+            if (string.Equals(bulletScript.curBulletColor, type))
+            {
                 levelScriptComponent.totalPoints += 2;
                 gridControllerComponent.numberOfAliensLeft--;
                 enemiesCount.updateEnemyCount(gridControllerComponent.numberOfAliensLeft);
                 score.Play();
                 animateDestroy();
-            }else{
+            }
+            else
+            {
                 //levelScriptComponent.lives--;
                 gridControllerComponent.correct = false;
                 incorrect.SetActive(true);
@@ -145,10 +164,11 @@ public class BoxController : MonoBehaviour {
         }
     }
 
-    public void animateDestroy() {
+    public void animateDestroy()
+    {
         boxAnimator = myObj.GetComponent<Animator>();
         boxAnimator.Play("DestroyBox");
-        Destroy(gameObject, boxAnimator.GetCurrentAnimatorStateInfo(0).length-0.3f); 
+        Destroy(gameObject, boxAnimator.GetCurrentAnimatorStateInfo(0).length - 0.3f);
     }
 
 }
