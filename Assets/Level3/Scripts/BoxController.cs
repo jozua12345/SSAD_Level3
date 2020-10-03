@@ -28,6 +28,7 @@ public class BoxController : MonoBehaviour {
     public int timeEnd;
     public bool rendered;
     public string type;
+    public bool last;
 
     public GameObject myObj;
     public GameObject levelScript;
@@ -54,6 +55,7 @@ public class BoxController : MonoBehaviour {
         AudioSource[] sound = GetComponents<AudioSource>();
         score = sound[1];
         deflect = sound[0];
+        last = false;
 
 
     }
@@ -75,17 +77,21 @@ public class BoxController : MonoBehaviour {
     // Update is called once per frame
     void Update() {
         // Start animaton
+        GridController gc = gridController.GetComponent<GridController>();
+
         if (curY < maxY) {
             transform.localPosition += new Vector3(0f,0.05f,0f);
             curY += 0.05f;
         }else{
             if(!rendered) {
-                if(timeStart > timeEnd){
+                if(gc.curTime < gc.endTime){
                     wall.render();
                 }
                 rendered = wall.getRendered();
             }
-            timeStart++;
+            if (last) {
+                gc.curTime -= 1*Time.deltaTime;
+            }
         }
         
 

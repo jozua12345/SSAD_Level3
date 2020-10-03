@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
+using UnityEngine.UI;
 
 public class GridController : MonoBehaviour {
     private BoxController[,] grid;
@@ -23,12 +24,18 @@ public class GridController : MonoBehaviour {
     public float numberOfAliensLeft;
     public bool correct;
 
+    public float curTime;
+    public float endTime;
+    public Text countDown;
+
     void Awake() {       
         gridHeight = 10;
         gridWidth = 40;
         startX = -16;
         curY = -3.6f;
         height = 4;
+        curTime = 10f;
+        endTime = 0f;
         
         //setAndStartGrid(4);
     }
@@ -80,6 +87,8 @@ public class GridController : MonoBehaviour {
                 grid[row, col].type = type;
             }
         }
+        grid[height-1, width-1].last = true;
+        curTime = 10f;
     }
 
     // Start is called before the first frame update
@@ -89,7 +98,9 @@ public class GridController : MonoBehaviour {
 
     // Update is called once per frame
     void Update() {
-        
+        if (curTime > endTime) {
+            countDown.text = curTime.ToString("0");
+        }
     }
 
 
