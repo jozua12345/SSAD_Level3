@@ -75,18 +75,30 @@ public class BoxController : MonoBehaviour {
     // Update is called once per frame
     void Update() {
         // Start animaton
-        if (curY < maxY) {
-            transform.localPosition += new Vector3(0f,0.05f,0f);
-            curY += 0.05f;
-        }else{
-            if(!rendered) {
-                if(timeStart > timeEnd){
-                    wall.render();
-                }
-                rendered = wall.getRendered();
+        LevelScript levelScriptComponent = levelScript.GetComponentInChildren<LevelScript>();
+  
+
+
+            if (curY < maxY)
+            {
+                transform.localPosition += new Vector3(0f, 0.05f, 0f);
+                curY += 0.05f;
             }
-            timeStart++;
-        }
+            else
+            {
+                if (!levelScriptComponent.tutorialStagePart2)
+                {
+                    if (!rendered)
+                    {
+                        if (timeStart > timeEnd)
+                        {
+                            wall.render();
+                        }
+                        rendered = wall.getRendered();
+                    }
+                    timeStart++;
+                }
+            }
         
 
     }

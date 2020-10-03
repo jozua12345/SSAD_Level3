@@ -22,47 +22,68 @@ public class LevelScript : MonoBehaviour
     public float target;
     public int lives;
     public Image[] images;
+    public bool tutorialStage;
+    public bool tutorialStagePart2;
+    public GameObject playerCanvas;
 
-
-    
     // Start is called before the first frame update
     void Start() {
         gridSizes = new int[] {0, 4, 5, 6};
         stage = 1;
         totalPoints = 0;
         lives = 3;
-        gamePaused = false;
+        gamePaused = true;
+        tutorialStage = true;
+        tutorialStagePart2 = true;
+
         renderGrid = true;
         bullet.GetComponent<Bullet>().setBulletColor();
         fuelMeter.fillAmount = 0;
         target = 60;
+
+
     }
 
     // Update is called once per frame
-    void Update() {
-        if (!gamePaused) {
+    void Update()
+    {
+        Debug.Log("GAME PAUSED"+ gamePaused);
+
+        if (!gamePaused)
+        {
+            Cursor.visible = false;
             showLives();
             fillFuel();
 
-            if(renderGrid) {
+            if (renderGrid)
+            {
                 gridController.setAndStartGrid(gridSizes[stage]);
                 renderGrid = false;
-            }else {
-                if (lives <= 0){
+            }
+            else
+            {
+                if (lives <= 0)
+                {
                     Debug.Log("Game Over, you lose!");
                     Invoke("loadGameOver", 0.5f);
-                }else if (totalPoints >= target) {
+                }
+                else if (totalPoints >= target)
+                {
                     Debug.Log("Game Over, you win!");
                     Invoke("loadEndGame", 0.5f);
 
                 }
-                else {
-                    if(gridController.checkSolution() == 1){
+                else
+                {
+                    if (gridController.checkSolution() == 1)
+                    {
                         gridController.destroyAll();
                         stage++;
                         gridController.setAndStartGrid(gridSizes[stage]);
                         bullet.GetComponent<Bullet>().setBulletColor();
-                    }else if (gridController.checkSolution() == 0){
+                    }
+                    else if (gridController.checkSolution() == 0)
+                    {
                         lives--;
                         gridController.destroyAll();
                         gridController.setAndStartGrid(gridSizes[stage]);
@@ -71,8 +92,42 @@ public class LevelScript : MonoBehaviour
                 }
             }
         }
+        else
+        {
+            // Tutorial 
+            if (tutorialStage)
+            {
+                Debug.Log("IN TUTORIAL STAGE");
+                showLives();
+                fillFuel();
+                Cursor.visible = true;
+                
+                    if (renderGrid)
+                    {
+                        continueDialogue("1");
+                        gridController.setAndStartGrid(gridSizes[stage]);
+                        renderGrid = false;
+                    }
+                
+
+
+
+            }
+        }
+
     }
 
+    void OnPauseGame()
+    {
+        gamePaused = true;
+    }
+
+  
+
+    void OnResumeGame()
+    {
+        gamePaused = false;
+    }
 
     void loadGameOver () {
         SceneManager.LoadScene("GameOver");
@@ -135,6 +190,32 @@ public class LevelScript : MonoBehaviour
         lives--;
         showLives();
     }*/
+
+    public void continueDialogue(string index)
+    {
+        Animator canvasAnimator = playerCanvas.GetComponent<Animator>();
+
+        if (index != "6")
+        {
+            canvasAnimator.SetTrigger($"continue{index}");
+
+
+        }
+        else
+        {
+            Debug.Log("INSIDE CONTINUE 6");
+            canvasAnimator.SetTrigger("continue6");
+       
+            tutorialStage = false;
+            tutorialStagePart2 = false;
+            gamePaused = false;
+
+
+        }
+
+
+
+    }
 
     void showLives()
     {

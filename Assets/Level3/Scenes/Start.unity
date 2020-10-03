@@ -7755,6 +7755,9 @@ MonoBehaviour:
   target: 60
   lives: 3
   images: []
+  tutorialStage: 0
+  tutorialStagePart1: 0
+  tutorialStagePart2: 0
 --- !u!4 &784778295
 Transform:
   m_ObjectHideFlags: 0
