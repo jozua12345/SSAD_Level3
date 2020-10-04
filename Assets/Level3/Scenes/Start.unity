@@ -7756,8 +7756,8 @@ MonoBehaviour:
   lives: 3
   images: []
   tutorialStage: 0
-  tutorialStagePart1: 0
   tutorialStagePart2: 0
+  playerCanvas: {fileID: 0}
 --- !u!4 &784778295
 Transform:
   m_ObjectHideFlags: 0
@@ -10538,6 +10538,9 @@ MonoBehaviour:
   enemiesCount: {fileID: 2106383842}
   numberOfAliensLeft: 0
   correct: 0
+  curTime: 0
+  endTime: 0
+  countDown: {fileID: 0}
 --- !u!4 &1735899250
 Transform:
   m_ObjectHideFlags: 0
