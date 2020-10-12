@@ -43,6 +43,8 @@ public class BoxController : MonoBehaviour
     private AudioSource score;
     private AudioSource deflect;
 
+    private bool firstCorrectClick;
+
     void Awake()
     {
         // correct or wrong
@@ -58,6 +60,8 @@ public class BoxController : MonoBehaviour
         score = sound[1];
         deflect = sound[0];
         last = false;
+
+        firstCorrectClick = false;
 
 
     }
@@ -146,12 +150,16 @@ public class BoxController : MonoBehaviour
         if (rendered)
         {
             if (string.Equals(bulletScript.curBulletColor, type))
-            {
-                levelScriptComponent.totalPoints += 2;
-                gridControllerComponent.numberOfAliensLeft--;
-                enemiesCount.updateEnemyCount(gridControllerComponent.numberOfAliensLeft);
-                score.Play();
-                animateDestroy();
+            {   
+                if (!firstCorrectClick) {
+                    levelScriptComponent.totalPoints += 2;
+                    gridControllerComponent.numberOfAliensLeft--;
+                    enemiesCount.updateEnemyCount(gridControllerComponent.numberOfAliensLeft);
+                    score.Play();
+                    firstCorrectClick = true;
+                    animateDestroy();
+
+                }
             }
             else
             {
