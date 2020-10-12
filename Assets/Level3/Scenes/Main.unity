@@ -11423,7 +11423,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 6.100006, y: -44.3}
+  m_AnchoredPosition: {x: 6.0999756, y: -44.300003}
   m_SizeDelta: {x: 172.49725, y: 44.752037}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1968330965
@@ -11659,7 +11659,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 694094b0110e86f40841af3268bd31c8, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 81e7c15420cba5f47b435ded5b131e83, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -12858,6 +12858,16 @@ PrefabInstance:
       propertyPath: m_RootOrder
       value: 5
       objectReference: {fileID: 0}
+    - target: {fileID: 3113562393217666541, guid: b83ac240415e38b46943429065a5dd20,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 68ae4bd94e70c064f95cdab87ac01d05, type: 2}
+    - target: {fileID: 3113562393494535226, guid: b83ac240415e38b46943429065a5dd20,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 68ae4bd94e70c064f95cdab87ac01d05, type: 2}
     - target: {fileID: 3113562393494535227, guid: b83ac240415e38b46943429065a5dd20,
         type: 3}
       propertyPath: m_RootOrder
@@ -12958,6 +12968,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3113562394463501145, guid: b83ac240415e38b46943429065a5dd20,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 68ae4bd94e70c064f95cdab87ac01d05, type: 2}
     - target: {fileID: 3113562394466624494, guid: b83ac240415e38b46943429065a5dd20,
         type: 3}
       propertyPath: m_RootOrder
